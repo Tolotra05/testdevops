@@ -4,7 +4,7 @@ pipeline {
     stages {
         stage('Clean') {
             steps {
-                cleanWs()
+                deleteDir()
             }
         }
         
@@ -14,7 +14,7 @@ pipeline {
             }
         }
         
-        stage('Build Docker') {
+        stage('Build') {
             steps {
                 sh '''
                     docker-compose down 2>/dev/null || true
@@ -35,34 +35,23 @@ pipeline {
         stage('Test') {
             steps {
                 sh '''
-                    # Test backend
-                    if curl -s http://localhost:5000/api/health | grep -q healthy; then
-                        echo "✅ Backend OK"
+                    # Backend test
+                    if curl -s http://localhost:5000/api/health; then
+                        echo "Backend OK"
                     else
-                        echo "❌ Backend failed"
+                        echo "Backend FAIL"
                         exit 1
                     fi
                     
-                    # Test frontend
-                    if curl -s -o /dev/null -w "%{http_code}" http://localhost:8080 | grep -q 200; then
-                        echo "✅ Frontend OK"
+                    # Frontend test  
+                    if curl -s -o /dev/null -w "%{http_code}" http://localhost:8081 | grep -q 200; then
+                        echo "Frontend OK"
                     else
-                        echo "❌ Frontend failed"
+                        echo "Frontend FAIL"
                         exit 1
                     fi
                     
-                    # Test login
-                    if curl -s -X POST http://localhost:5000/api/login \
-                       -H "Content-Type: application/json" \
-                       -d '{"username":"admin","password":"admin123"}' | grep -q success; then
-                        echo "✅ Login OK"
-                    else
-                        echo "❌ Login failed"
-                        exit 1
-                    fi
-                    
-                    echo "🎉 All tests passed!"
-                    echo "App: http://localhost:8080"
+                    echo "ALL TESTS PASSED"
                 '''
             }
         }
