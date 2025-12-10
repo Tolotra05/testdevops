@@ -1,21 +1,13 @@
 services:
   backend:
     build: ./backend
-    container_name: backend
     ports:
       - "5000:5000"
-    volumes:
-      - ./backend:/app
-      - ./data:/app/data
-    environment:
-      - FLASK_ENV=production
-    restart: unless-stopped
+    # PAS DE VOLUMES !
 
   frontend:
     build: ./frontend
-    container_name: frontend
     ports:
       - "8081:80"
     depends_on:
       - backend
-    restart: unless-stopped
