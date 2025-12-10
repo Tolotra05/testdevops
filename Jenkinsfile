@@ -2,9 +2,7 @@ pipeline {
     agent any
     
     environment {
-        // Variables d'environnement
         PROJECT_NAME = 'projet2'
-        DOCKER_REGISTRY = ''  // À configurer si vous avez un registry
     }
     
     stages {
@@ -19,7 +17,7 @@ pipeline {
             steps {
                 echo '📥 Récupération du code depuis Git...'
                 git branch: 'main',
-                    url: 'https://github.com/votre-utilisateur/projet2.git'
+                    url: 'https://github.com/Tolotra05/testdevops'
                 
                 sh '''
                     echo "📁 Structure du projet :"
