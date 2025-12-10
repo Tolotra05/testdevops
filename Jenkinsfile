@@ -17,8 +17,8 @@ pipeline {
         stage('Build') {
             steps {
                 sh '''
-                    docker-compose down 2>/dev/null || true
-                    docker-compose build
+                    docker compose down 2>/dev/null || true
+                    docker compose build
                 '''
             }
         }
@@ -26,7 +26,7 @@ pipeline {
         stage('Deploy') {
             steps {
                 sh '''
-                    docker-compose up -d
+                    docker compose up -d
                     sleep 10
                 '''
             }
@@ -59,7 +59,7 @@ pipeline {
     
     post {
         always {
-            sh 'docker-compose down 2>/dev/null || true'
+            sh 'docker compose down 2>/dev/null || true'
         }
     }
 }
