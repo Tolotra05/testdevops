@@ -9,4 +9,4 @@ echo "🚀 Démarrage des services..."
 docker compose up -d
 
 echo "📋 Logs (Ctrl+C pour quitter)..."
-docker compose logs -f
+docker compose logs 
